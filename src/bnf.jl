@@ -1,4 +1,4 @@
 module bnf
+include("lexer.jl")
 
-greet() = println("Hello World!")
-end # module bnf
+end

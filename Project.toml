@@ -2,3 +2,11 @@ name = "bnf"
 uuid = "27a63b6a-c01f-4aeb-9aa1-a7a8dc09d397"
 authors = ["Hannes <hannes10042004@icloud.com>"]
 version = "0.1.0"
+
+[deps]
+LanguageServer = "2b0e0bc5-e4fd-59b4-8912-456d1b03d8d7"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+
+[compat]
+LanguageServer = "4.5.1"
+Revise = "3.7.4"
