@@ -27,6 +27,7 @@ function make_location(filepath::String, row::Int, column::Int)
     Location(filepath, row, column)
 end
 
+# Initialize a lexer
 function init_lexer(input::Vector{Char}, filePath::String, row::Int)
     Lexer(input, filePath, row, 0, false, Token(EmptyToken, [], make_location(filePath, row, 0)))
 end
