@@ -80,22 +80,12 @@ end
 function extract_token(lexer::Lexer)
     trim(lexer)
     loc::Location = Location(lexer.filePath, lexer.row, lexer.column)
+    start::Int = lexer.column
 
     if lexer.column > length(lexer.content) || lexer.content[lexer.column] == ' '
         lexer.token_buffer = Token(EOLToken, "\n", loc)
     elseif lexer.content[lexer.column] == '<'
-        start::Int = lexer.column
-        lexer.column += 1
-        while lexer.column <= length(lexer.content) && lexer.content[lexer.column] != '>'
-            lexer.column += 1
-        end
-        loc.column = lexer.column
-
-        if lexer.column > length(lexer.content)
-            throw(LexerErr("Undetermined Non-Terminal. Expected '>'", loc))
-        elseif lexer.content[lexer.column] == '>'
-           lexer.column += 1
-        end
+        tokenize_until_char(lexer, '>', loc)
         lexer.token_buffer = Token(NonTerminalToken, lexer.content[start:loc.column], loc)
     elseif lexer.column <= length(lexer.content) + 2 && lexer.content[lexer.column] == ':'
         if lexer.content[lexer.column + 1] != ':' || lexer.content[lexer.column + 2] != '='
@@ -103,14 +93,32 @@ function extract_token(lexer::Lexer)
         end
         lexer.column += 2
         loc.column = lexer.column
-        lexer.token_buffer = Token(MetaToken, lexer.content[lexer.column-2:lexer.column], loc)
+        lexer.token_buffer = Token(MetaToken, lexer.content[lexer.column-2:loc.column], loc)
         lexer.column += 1
+    elseif lexer.content[lexer.column] == '"'
+        tokenize_until_char(lexer, '"', loc)
+        lexer.token_buffer = Token(ExpressionToken, lexer.content[start:loc.column], loc)
     elseif lexer.column <= length(lexer.content) && lexer.content[lexer.column] == '|'
-        lexer.token_buffer = Token(PundentToken, lexer.content[lexer.column], loc)
+        lexer.token_buffer = Token(PundentToken, string(lexer.content[loc.column]), loc)
         lexer.column += 1
     else
-        throw(LexerErr("No Token Exception", loc))
+        throw(LexerErr("No Token Exception, got $(lexer.content[lexer.column])", loc))
     end
 
     return lexer.token_buffer
 end
+
+function tokenize_until_char(lexer::Lexer, c::Char, loc::Location)
+
+        lexer.column += 1
+        while lexer.column <= length(lexer.content) && lexer.content[lexer.column] != c
+            lexer.column += 1
+        end
+        loc.column = lexer.column
+
+        if lexer.column > length(lexer.content)
+            throw(LexerErr("Undetermined Non-Terminal. Expected $(c)", loc))
+        elseif lexer.content[lexer.column] == c
+            lexer.column += 1
+        end
+    end
