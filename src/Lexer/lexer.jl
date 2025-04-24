@@ -64,6 +64,7 @@ function next(lexer::Lexer)
         lexer.token_buffer_full = false
         return lexer.token_buffer
     end
+    
     return extract_token(lexer)
 end
 
@@ -74,6 +75,7 @@ function peek(lexer::Lexer)
     else
         lexer.token_buffer_full = true
     end
+    
     return extract_token(lexer)
 end
 
