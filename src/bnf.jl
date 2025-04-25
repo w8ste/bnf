@@ -5,15 +5,16 @@ include("Parser/parser.jl")
 
 for x in ARGS
     if isfile(x)
+        grammer = String[]
         lines = readlines(x)
         for i in eachindex(lines)
-            grammer = String[]
             lexer = init_lexer(lines[i], x, i)
             r = parse(lexer, grammer)
+            println(grammer)
             if isnothing(r)
                 continue
             end
-            println(r)
+#            println(r)
         end
     end
 end
