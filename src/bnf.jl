@@ -10,11 +10,10 @@ for x in ARGS
         for i in eachindex(lines)
             lexer = init_lexer(lines[i], x, i)
             r = parse(lexer, grammer)
-            println(grammer)
             if isnothing(r)
                 continue
             end
-#            println(r)
+            println(r)
         end
     end
 end
