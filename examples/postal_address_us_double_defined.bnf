@@ -2,6 +2,8 @@
 
 <name-part> ::= <personal-part> <last-name> <opt-suffix-part> <EOL> | <personal-part> <name-part>
 
+<name-part> ::= <test_double_defined>
+
 <personal-part> ::= <first-name> | <initial> "."
 
 <street-address> ::= <house-num> <street-name> <opt-apt-num> <EOL>

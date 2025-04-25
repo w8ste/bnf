@@ -48,3 +48,19 @@ function expect(lexer::Lexer, expected::TokenKind)
     end
     return v
 end
+function find_undefined_symbols(rules::Vector{Rule})
+    defined = Set(rule.lhs for rule in rules)
+    referenced = Set{String}()
+
+    for rule in rules
+        for rhs in rule.rhs
+            for symbol in rhs
+                if startswith(symbol, "<") && endswith(symbol, ">")
+                    push!(referenced, symbol)
+                end
+            end
+        end
+    end
+
+    return setdiff(referenced, defined)
+end
