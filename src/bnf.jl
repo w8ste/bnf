@@ -9,9 +9,12 @@ for x in ARGS
         for i in eachindex(lines)
             grammer = String[]
             lexer = init_lexer(lines[i], x, i)
-            println(parse(lexer, grammer))
+            r = parse(lexer, grammer)
+            if isnothing(r)
+                continue
+            end
+            println(r)
         end
-      
     end
 end
 end
