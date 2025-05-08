@@ -1,0 +1,29 @@
+<program> ::= <rule> <program> | ""
+
+<rule> ::= <atom> ":-" <atom-list> "."
+
+<atom> ::= <relation> "(" <term-list> ")"
+
+<atom-list> ::= <atom> | <atom> "," <atom-list> | ""
+
+<term> ::= <constant> | <variable>
+
+<term-list> ::= <term> | <term> "," <term-list> | ""
+
+<relation> ::= <identifier>
+
+<constant> ::= <string> | <number>
+
+<variable> ::= <identifier-start-uppercase>
+
+<identifier> ::= <letter> <identifier-tail>
+<identifier-tail> ::= <letter-or-digit>
+
+<letter> ::= "a" | "b" | "z" | "A" | "B" | "Z"
+<letter-or-digit> ::= <letter> | "0" | "9"
+
+<identifier-start-uppercase> ::= "A" | "B" | "Z" <identifier-tail>
+
+<string> ::= "test"
+<number> ::= <digit>
+<digit> ::= "0" | "1" | "9"
